@@ -43,7 +43,7 @@ const fetchMustReadPosts = async ({ perPage, offset, mustRead, readAlso }) => {
 };
 
 const fetchPost = async (id) => {
-  const postUrl = `https://volleyland.gr/wp-json/wp/v2/posts`;
+  const postUrl = `https://volleyland.gr/wp-json/wp/v2/posts/${id}`;
 
   try {
     const res = await axios.get(postUrl);

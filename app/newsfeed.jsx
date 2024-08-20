@@ -1,21 +1,18 @@
 import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native'
 import React from 'react'
-import { useGlobalSearchParams, useRouter } from 'expo-router'
-import { Drawer } from 'expo-router/drawer'
+import { Stack, useGlobalSearchParams, useRouter } from 'expo-router'
 import { useQuery } from '@tanstack/react-query'
-import { fetchPosts } from '../../../api/services'
+import { fetchPosts } from '../api/services'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
-import LogoComponent from '../../../components/LogoComponent'
-import AnimatedHeaderTitle from '../../../components/AnimatedHeaderTitle'
-import Card from '../../../components/Card'
+import LogoComponent from '../components/LogoComponent'
+import AnimatedHeaderTitle from '../components/AnimatedHeaderTitle'
+import Card from '../components/Card'
 
-const categoryIdPage = () => {
+const newsFeedPage = () => {
   const router = useRouter()
-  const params = useGlobalSearchParams()
-
   const query = useQuery({
     queryKey:['posts'],
-    queryFn: ()=>fetchPosts({perPage:25,category: params.categoryId})
+    queryFn: ()=>fetchPosts({perPage:25})
   })
 
   // console.log('Current Category: ', query.data);
@@ -24,11 +21,11 @@ const categoryIdPage = () => {
 
   if(query.isLoading || query.isFetching){
    return (
-
-    <View style={styles.container}>
-     <Drawer.Screen 
+    
+    <View style={styles.container}>  
+     <Stack.Screen 
         options={{
-          headerTitle: (query.isLoading || query.isFetching) ? ()=> <ActivityIndicator size={14} color={'#2b72b9'} /> : () => <AnimatedHeaderTitle title={params.title}/>,
+          headerTitle: 'Ροή Ειδήσεων',
           headerRight: ()=> <LogoComponent />,
           headerTitleAlign: 'center'
         }}
@@ -41,9 +38,9 @@ const categoryIdPage = () => {
 
   return (
     <View>
-      <Drawer.Screen 
+      <Stack.Screen 
         options={{
-          headerTitle: (query.isLoading || query.isFetching) ? ()=> <ActivityIndicator size={14} color={'#2b72b9'} /> : () => <AnimatedHeaderTitle title={params.title}/>,
+          headerTitle: 'Ροή Ειδήσεων',
           headerRight: ()=> <LogoComponent />,
           headerTitleAlign: 'center'
         }}
@@ -58,7 +55,7 @@ const categoryIdPage = () => {
               image={item.fimg_url} 
               views={item.post_views_count} 
               goToCategory={ item.categories_names[0]==='Featured' ? ()=> router.push(`categories/${item.categories[1]}?title=${item.categories_names[1]}`) : ()=> router.push(`categories/${item.categories[0]}?title=Διάφορα`)} 
-              category={item.categories_names[0]==='Featured' ? item.categories_names[1] : 'Διάφορα' }
+              category={item.categories_names[0]==='Featured' ? item.categories_names[1] : 'Διάφορα' } 
               thedate={item.date}
               thetime={item.date}
               author={item.author_name}
@@ -78,4 +75,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default categoryIdPage
+export default newsFeedPage

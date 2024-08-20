@@ -4,7 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { fetchCategories } from '../api/services'
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Text, StyleSheet, View } from "react-native";
-
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 
 export default function CustomDrawerContent(props){
@@ -28,13 +28,21 @@ if(!categories){
         }}
         >
             <DrawerItem
-            labelStyle={styles.homeLabel} label={({ focused, color }) => (
+            labelStyle={styles.label} label={({ focused, color }) => (
                 <Text style={[styles.label, { color: focused ? 'blue' : color }]}>
-                  Αρχική
+                  Volleyland
                 </Text>
               )} onPress={()=>router.push('/')}
-               icon={({focused,size,color}) => <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} /> }
+               icon={({focused,size,color}) => <FontAwesome5 name="volleyball-ball" size={size} color={'#2b72b9'} /> }
                />
+            <DrawerItem
+                labelStyle={styles.label} label={({ focused, color }) => (
+                    <Text style={[styles.label, { color: focused ? 'blue' : color }]}>
+                      Reading List
+                    </Text>
+                  )} onPress={()=>router.push('/(drawer/readinglist')}
+                   icon={({focused,size,color}) => <Ionicons name={'bookmark'} size={size} color={'#2b72b9'} /> }
+                   />
             <Text style={{alignSelf:'center'}}>Ενδεχομένως να είστε εκτός σύνδεσης.</Text>        
             <DrawerItem  label={'Όροι Χρήσης'} />
             <DrawerItem  label={'Σχετικά με εμάς'} />
@@ -52,7 +60,7 @@ const CustomDrawerItem = ({ focused, color, size, label, onPress }) => {
                     <Ionicons
                         name='add-outline'
                         size={size}
-                        color={color}
+                        color={'#2b72b9'}
                     />
                 )}
                 label={label}
@@ -71,13 +79,17 @@ return (
     }}
     >
         <DrawerItem
-        labelStyle={styles.homeLabel} label={({ focused, color }) => (
-            <Text style={[styles.label, { color: focused ? 'blue' : color }]}>
-              Αρχική
-            </Text>
-          )} onPress={()=>router.push('/')}
-           icon={({focused,size,color}) => <Ionicons name={focused ? 'home' : 'home-outline'} size={size} color={color} /> }
+        labelStyle={styles.label}
+        label={'Volleyland'}
+        onPress={()=>router.push('/')}
+           icon={({focused,size,color}) => <FontAwesome5 name="volleyball-ball" size={size} color={'#2b72b9'} /> }
            />
+        <DrawerItem 
+                labelStyle={styles.label}
+                label={'Reading List'}
+                onPress={()=>router.push('/readinglist')}
+                   icon={({focused,size,color}) => <Ionicons name={'bookmarks-outline'} size={size} color={'#2b72b9'} /> }
+                   />
         {isLoading ? <ActivityIndicator size={14} color={'blue'}/> : 
         categories?.map((c) => (
             <CustomDrawerItem
@@ -106,7 +118,7 @@ const styles = StyleSheet.create({
  
     },
     label: {
-        color: 'black',
+        color: '#2b72b9',
     },
     // homeLabel: {
     //     marginLeft: -20

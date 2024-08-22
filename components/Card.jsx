@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Image } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Image, Platform } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useState, memo } from "react";
 import he from 'he'
@@ -33,8 +33,10 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
             </View>
         <Text style={styles.cardTitle}>{theTitle}</Text>
         <View style={styles.metaBox}>
+          <View style={styles.metaTopLine}></View>
           <Text style={styles.meta}><Ionicons name="calendar" size={10} color="#fff" /> {postDate(thedate)} {postTime(thetime)}</Text>
           <Text style={styles.author}><Feather name="pen-tool" size={10} color="#fff" /> {author}</Text>
+          <View style={styles.metaBottomLine}></View>
         </View>
         </View>
       </TouchableOpacity>
@@ -66,6 +68,7 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
         shadowColor: "#171717",
         shadowOffset: { width: -2, height: 2 },
         shadowOpacity: 0.1,
+        elevation:3
       },
       cardTitle: {
         backgroundColor: '#2b72b9',
@@ -128,20 +131,36 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
         position:'absolute',
         bottom:0,
         right:0,
-        backgroundColor: '#000',
         paddingLeft: 20,
         borderTopStartRadius:5,
-        paddingVertical:4
+        paddingVertical:4,
+        marginRight: Platform.OS === 'android' ? 25 : 10
       },
       meta: {
-        color: '#fff',
+        color: '#444',
         fontSize: 10,
         fontWeight: 'bold',
-        marginRight:25
+        textAlign: 'right',
       },
       author: {
-        color:'#fff',
+        color:'#444',
         fontSize: 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: 'right'
+      },
+      metaTopLine: {
+        height:1,
+        width: '80%',
+        backgroundColor: "#ccc",
+        position: 'absolute',
+        right: 0
+      },
+      metaBottomLine: {
+        height:1,
+        width: '100%',
+        backgroundColor: "#ccc",
+        position: 'absolute',
+        right: 0,
+        bottom:0
       }
   })

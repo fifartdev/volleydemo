@@ -13,12 +13,14 @@ import CategoryTitle from '../../components/CategoryTitle'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import CategoryButton from '../../components/CategoryButton'
 import Feather from '@expo/vector-icons/Feather';
+import * as SplashScreen from 'expo-splash-screen';
 
 LogBox.ignoreLogs(['Support for defaultProps will be removed']);
 
+SplashScreen.preventAutoHideAsync()
+
 const index = () => {
   const headerHeight = useHeaderHeight()
-  const date = (d) => { return new Date(d).toLocaleDateString('el-GR')}
   const router = useRouter()
   const [refreshing,setRefreshing] = useState(false)
 
@@ -62,6 +64,11 @@ const index = () => {
     { data: categories, isLoading: isCategoriesLoading, error: categoriesError, isFetching: isCategoriesFetching },
   ] = queries;
 
+  if(featured){
+    SplashScreen.hideAsync()
+  }
+  
+  
 
   const onRefresh = useCallback(()=>{
     setRefreshing(true)
@@ -383,9 +390,9 @@ const styles = StyleSheet.create({
 
     alternativeHorizontalCardAlt: {
       
-      paddingBottom: 20,
+      paddingBottom: 10,
       paddingTop: 10,
-      marginVertical: 10
+      marginVertical: 4
     }
   
  

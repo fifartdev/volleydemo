@@ -30,7 +30,7 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         </View>
             <View style={styles.metaContainer}>            
         <Text style={styles.cardTitle}>{theTitle}</Text>
-        <View style={{height:1,width:'20%',backgroundColor:'#fff',marginVertical:4,alignSelf:'center'}}></View>
+        <View style={{height:1,width:'20%',backgroundColor:'#444444',marginVertical:4,alignSelf:'center'}}></View>
         <Text style={styles.date}>{postDate(thedate)} {postTime(thetime)}</Text>
         <Text style={styles.author}>{author}</Text>
             </View>
@@ -63,6 +63,7 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         shadowColor: "#171717",
         shadowOffset: { width: -2, height: 2 },
         shadowOpacity: 0.1,
+        elevation: 4
       },
       cardCategory: {
         fontSize: 12,
@@ -106,26 +107,39 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         justifyContent: 'center',
         top:10,
         alignContent:'center',
-        backgroundColor:'#2b72b9',
-        margin:20
+        backgroundColor:'#fff',
+        opacity:0.9,
+        margin:20,
+        shadowColor: "#171717",
+        shadowOffset: { width: -2, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+        backgroundColor: "#fff",
+        shadowColor: "#171717",
+        shadowOffset: { width: -2, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        shadowColor: "#171717",
+        shadowOffset: { width: -2, height: 2 },
+        shadowOpacity: 0.1,
+        elevation:2
       },
       cardTitle: {
-        backgroundColor: '#2b72b9',
         fontSize: 12, 
         fontWeight:'bold', 
-        color: '#fff', 
+        color: '#444444', 
         padding: 4,
         alignSelf: 'center',
         textAlign: 'center' 
       },
       date:{
-        color:'#fff',
+        color:'#444444',
         fontSize:10,
         fontWeight:'bold',
         textAlign:'center',
       },
       author:{
-        color:'#fff',
+        color:'#444444',
         fontSize:10,
         fontWeight:'bold',
         textAlign:'center',

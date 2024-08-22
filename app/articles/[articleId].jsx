@@ -16,14 +16,19 @@ const articleId = () => {
     const query = useQuery({
       queryKey: ['post'],
       queryFn: () => fetchPost(params.articleId),
+      refetchOnMount:'always',
+      enabled: !!params.articleId,
+      refetchOnWindowFocus: true,
     });
 
     const simCatPosts = useQuery({
-      queryKey: ['simCatPosts'],
-      queryFn: () => fetchPosts({category: query.data.categories[0] == 467 ? query.data.categories[1] : query.data.categories[0], perPage:4})
+      queryKey: ['simCatPosts', params.articleId],
+      queryFn: () => fetchPosts({category: query.data.categories[0] == 467 ? query.data.categories[1] : query.data.categories[0], perPage:4}),
+      enabled: !!query.data
     })
 
-  
+
+    
   
     
 
@@ -35,7 +40,7 @@ useEffect(()=>{
 
 const postIds = useQuery({
   queryKey: ['postIds'],
-  queryFn: getPostIds
+  queryFn: getPostIds,
 })
 const addPostIdMutation = useMutation(
   {
@@ -43,6 +48,7 @@ const addPostIdMutation = useMutation(
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries(['postIds'])
+      
     },
   }
 );
@@ -100,7 +106,7 @@ const shareURL = async (message) => {
       headerBackTitle: 'Πίσω'
     }}
     />
-    <ActivityIndicator size={'small'} color={'blue'} />
+    <ActivityIndicator size={'small'} color={'black'} />
     </>  
     )
   }
@@ -170,10 +176,11 @@ const shareURL = async (message) => {
     options={{
       headerTitle: ()=> <ArticleLogo />,
       headerBackTitle: 'Πίσω',
-      headerTitleAlign: 'center'
+      headerTitleAlign: 'center',
+      animation: 'slide_from_right'
     }}
     />
-    <ArticleComponentHtml id={params.articleId} image={query?.data.fimg_url} title={query?.data.title.rendered} views={query?.data.post_views_count} date={query?.data.date} author={query?.data.author_name} content={query?.data.content.rendered} similarCatPosts={simCatPosts?.data} />
+    <ArticleComponentHtml id={params.articleId} image={query.isLoading ? null : query?.data.fimg_url} title={ query.isLoading ? 'φορτώνει...' : query?.data.title.rendered} views={query?.data.post_views_count} date={query?.data.date} author={query?.data.author_name} content={query?.data.content.rendered} similarCatPosts={simCatPosts?.data} plaintext={query?.data.plain_text_content}/>
       <View style={styles.bottomBar}> 
         <View style={styles.bottomBarItem}>
          { postIds?.data.includes(params.articleId) ? 
@@ -197,22 +204,24 @@ const shareURL = async (message) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f0f0f0',
     padding: 10
   },
   bottomBar: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right:0,
-    width: '100%',
+    bottom: 30,
+    left: '13%',
+    right: 0,
+    width: '80%',
     backgroundColor: '#fff', // Background color for the bottom bar
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 50, // Height of the bottom bar
+    height: 40, // Height of the bottom bar
     borderTopColor: '#ddd',
-    paddingBottom:20 // Optional border for the bottom bar
+    padding:10, // Optional border for the bottom bar
+    borderRadius: 15,
+    opacity:0.9
   },
   bottomBarItem: {
     flex: 1,

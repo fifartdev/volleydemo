@@ -1,4 +1,4 @@
-import { View, Text, ActivityIndicator, ScrollView, StatusBar, StyleSheet, LogBox, SafeAreaView, RefreshControl } from 'react-native'
+import { View, Text, ActivityIndicator, ScrollView, StatusBar, StyleSheet, LogBox, SafeAreaView, RefreshControl, Platform } from 'react-native'
 import React, { useState, useCallback } from 'react'
 import Drawer from 'expo-router/drawer'
 import AnimatedLogoComponent from '../../components/AnimatedLogoComponent'
@@ -27,6 +27,8 @@ const index = () => {
       {
         queryKey: ['featured'],
         queryFn: () => fetchPosts({ category: 467, perPage: 10 }),
+        refetchInterval: 900000,
+        refetchIntervalInBackground: true
       },
       {
         queryKey: ['vlmen'],
@@ -52,19 +54,14 @@ const index = () => {
   })
 
   const [
-    { data: featured, isLoading: isFeaturedLoading, error: featuredError, isFetching: isFeaturedFetching },
+    { data: featured, isLoading: isFeaturedLoading, error: featuredError, isFetching: isFeaturedFetching, refetch: refetch },
     { data: vlmen, isLoading: isVlmenLoading, error: vlmenError, isFetching: isVlmenFetching },
     { data: plmen, isLoading: isPlmenLoading, error: plmenError, isFetching: isPlmenFetching },
     { data: vlwmen, isLoading: isVlwmenLoading, error: vlwmenError, isFetching: isVlwmenFetching },
     { data: plwmen, isLoading: isPlwmenLoading, error: plwmenError, isFetching: isPlwmenFetching },
     { data: categories, isLoading: isCategoriesLoading, error: categoriesError, isFetching: isCategoriesFetching },
   ] = queries;
-  
 
-  const { refetch } = useQuery({
-    queryKey:['posts'],
-    queryFn: fetchPosts
-  })
 
   const onRefresh = useCallback(()=>{
     setRefreshing(true)
@@ -83,7 +80,7 @@ const index = () => {
         
         
         />     
-        <Text>Δεν υπάρχουν αποτελέσματα. Εδεχομένως να βρίσκεστε εκτός σύνδεσης</Text>
+        <Text style={{paddingHorizontal: 20,margin:10}}>Δεν υπάρχουν αποτελέσματα. Εδεχομένως να βρίσκεστε εκτός σύνδεσης</Text>
       </View>
     )
   }
@@ -124,10 +121,9 @@ const index = () => {
         textstyles={styles.categoryText}
         icon={<MaterialCommunityIcons name="volleyball" size={20} color="#fff" />}
         />
-      <CategoryButton
-        title={'Ροή Ειδήσεων'} 
+      <CategoryButton 
         viewstyles={styles.categoryViewAltΒ}
-        textstyles={styles.categoryText}
+        textstyles={[styles.categoryText, Platform.OS == 'android' && { marginLeft:4}]}
         icon={<Feather name="target" size={20} color="#fff" />}
         onPress={()=>router.push('/newsfeed')}
 
@@ -329,7 +325,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
   },
   categoryViewAltC: {
-    backgroundColor:'#000',
+    backgroundColor:'#2b72b9',
         margin:10,
         padding:4,
         width:'60%',
@@ -380,13 +376,13 @@ const styles = StyleSheet.create({
     },
 
     alternativeHorizontalCard: {
-      backgroundColor:'#2b72b9',
+      backgroundColor:'#000',
       paddingVertical: 20,
       marginVertical: 10
     },
 
     alternativeHorizontalCardAlt: {
-      backgroundColor:'#b5d6f7',
+      
       paddingBottom: 20,
       paddingTop: 10,
       marginVertical: 10

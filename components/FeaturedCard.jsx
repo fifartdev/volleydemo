@@ -120,13 +120,13 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
       },
       date:{
         color:'#fff',
-        fontSize:'10',
+        fontSize:10,
         fontWeight:'bold',
         textAlign:'center',
       },
       author:{
         color:'#fff',
-        fontSize:'10',
+        fontSize:10,
         fontWeight:'bold',
         textAlign:'center',
       },

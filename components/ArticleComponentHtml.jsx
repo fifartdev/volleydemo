@@ -1,25 +1,47 @@
-import { View, Text, ActivityIndicator, useWindowDimensions, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React, {useEffect, memo} from 'react'
-import {WebView} from 'react-native-webview'
+import { View, Text, useWindowDimensions, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native'
+import React, { memo, useState} from 'react'
 import he from 'he'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 import { ScrollView } from 'react-native-gesture-handler';
-import RenderHTML from 'react-native-render-html';
 import Animated, { Easing, FadeIn } from 'react-native-reanimated'
 import { useRouter } from 'expo-router';
+import * as Speech from 'expo-speech';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import TextDisplay from './TextDisplay';
 
 
-function ArticleComponentHtml({image,title,content,views,date,author,similarCatPosts,id}) {
+function ArticleComponentHtml({image,title,content,views,date,author,similarCatPosts,id,plaintext}) {
   const postDate = (d) => { return new Date(d).toLocaleDateString('el-GR')}
   const postTime = (d) => { return new Date(d).toLocaleTimeString('el-GR')}
+  const [shown,setShown] = useState(true)
+  const [resumeShown,setResumeShown] = useState(false)
   const router = useRouter()
-const { width } = useWindowDimensions()  
 
   const filteredPosts = similarCatPosts.filter(f => f.id != id)
-  // console.log('IDs are: ', filteredPosts.map(f=>f.id));
-  // console.log('Current id is: ', id);
   
+  const readText =  () => {
+    const text = he.decode(plaintext)
+    Speech.speak(text,{
+      language:'el-GR'
+    })
+    setShown(false)
+  }
+  const pauseRead = () => {
+    Speech.pause()
+    setResumeShown(true)
+  }
+  const resumeRead = () => {
+    Speech.resume()
+    setResumeShown(false)
+  }
+  const stopRead = ()=>{
+    Speech.stop()
+    setShown(true)
+    setResumeShown(false)
+  }
+// TEXT 2 SPEACH ENDS HERE
+
 
   return (
     <ScrollView
@@ -41,11 +63,33 @@ const { width } = useWindowDimensions()
     <Text style={styles.metaText}><Ionicons name="eye" size={10} color="#fff" /> {views}</Text>
     </View>
       <View style={{flex: 1}}>
-      <RenderHTML
-        source={{html:content}}
-        contentWidth={width}
-        ignoredDomTags={['iframe','svg']}
-      />
+      { Platform.OS === 'ios' ? 
+      <View style={styles.soundBar}>
+        <Text style={styles.soundBarText}>Ακούστε το Άρθρο: </Text>
+        { resumeShown && <MaterialCommunityIcons color={'#fff'} size={20} name='restart' onPress={resumeRead} style={{marginHorizontal:5}} /> }
+        {
+          shown ?
+          <Ionicons size={20} color={'#fff'} name='play' onPress={readText}/> :
+          <>
+         { !resumeShown && <Ionicons size={20} color={'#fff'} name='pause' onPress={pauseRead} style={{marginHorizontal:5}}/>}
+          <Ionicons size={20} color={'#fff'} name='stop' onPress={stopRead} style={{marginHorizontal:5}} />
+          </>
+
+        } 
+      </View> : 
+       <View style={styles.soundBar}>
+       <Text style={styles.soundBarText}>Ακούστε το Άρθρο: </Text>
+       {
+         shown ?
+        <Ionicons size={20} color={'#fff'} name='play' onPress={readText}/> :
+        <Ionicons size={20} color={'#fff'} name='stop' onPress={stopRead} style={{marginHorizontal:5}} />
+      
+       } 
+     </View>  
+
+      }  
+     {/*HERE TO PLACE THE TEXT COMPONENT */}
+        <TextDisplay html={content}/>
       </View>
       <Text style={{fontSize:14,fontWeight:'bold',marginBottom:2}}>Διαβάστε Επίσης: </Text>
       <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',justifyContent:'space-between', width:'100%',marginBottom:50}}>
@@ -63,7 +107,7 @@ const { width } = useWindowDimensions()
   )
 }
 
-export default memo(ArticleComponentHtml)
+export default ArticleComponentHtml
 
 const styles = StyleSheet.create({
     title: {
@@ -116,5 +160,19 @@ const styles = StyleSheet.create({
       metaText: {
         color: '#fff',
         fontSize: 12
+      },
+      soundBar:{
+        flexDirection: 'row',
+        justifyContent:'flex-start',
+        alignItems:'center',
+        backgroundColor: '#000',
+        padding: 4,
+        top:-4
+      },
+      soundBarText: {
+        fontSize:20,
+        fontWeight:'bold',
+        color: '#fff'
+
       }
-})
+    })

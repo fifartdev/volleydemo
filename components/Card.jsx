@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Image, Platform } from "react-native";
+import { Text, StyleSheet, Dimensions, View, Image, Platform, Pressable } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useState, memo } from "react";
 import he from 'he'
@@ -16,7 +16,7 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
 
 
     return (
-      <TouchableOpacity onPress={onPress} style={styles.cardContainer}>
+      <Pressable onPress={onPress} style={styles.cardContainer}>
         <View style={styles.imageContainer}>
         <Image source={
           image ? {uri:image} : require('../assets/volleyland_logo.png')
@@ -39,7 +39,7 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
           <View style={styles.metaBottomLine}></View>
         </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 

@@ -1,5 +1,5 @@
-import { View, Text, useWindowDimensions, StyleSheet, Image, TouchableOpacity, Platform } from 'react-native'
-import React, { memo, useState} from 'react'
+import { View, Text, useWindowDimensions, StyleSheet, Image, TouchableOpacity, Platform, BackHandler } from 'react-native'
+import React, { memo, useEffect, useState} from 'react'
 import he from 'he'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
@@ -40,6 +40,7 @@ function ArticleComponentHtml({image,title,content,views,date,author,similarCatP
     setShown(true)
     setResumeShown(false)
   }
+
 // TEXT 2 SPEACH ENDS HERE
 
 

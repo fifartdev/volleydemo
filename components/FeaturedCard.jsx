@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, StyleSheet, Dimensions, View, Image } from "react-native";
+import { Pressable, Text, StyleSheet, Dimensions, View, Image } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useState, memo } from "react";
 import he from 'he'
@@ -16,7 +16,7 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
 
 
     return (
-      <TouchableOpacity onPress={onPress} style={styles.cardContainer}>
+      <Pressable onPress={onPress} style={styles.cardContainer}>
         <View style={styles.imageContainer}>
         <Image source={
           image ? {uri:image} : require('../assets/volleyland_logo.png')
@@ -34,7 +34,7 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         <Text style={styles.date}>{postDate(thedate)} {postTime(thetime)}</Text>
         <Text style={styles.author}>{author}</Text>
             </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 
@@ -46,8 +46,8 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         marginHorizontal: 6,
         marginVertical: 4,
         padding: 5,
-        width: Dimensions.get("screen").width / 2,
-        maxWidth: Dimensions.get("screen").width / 2,
+        width: Dimensions.get("screen").width / 1.7,
+        maxWidth: Dimensions.get("screen").width / 1.7,
         height: 260,
         borderColor: "#ccc",
         borderRadius: 5,

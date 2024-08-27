@@ -7,6 +7,8 @@ export default function mainLayout(){
             drawerContent={CustomDrawerContent} 
             screenOptions={{
                 drawerHideStatusBarOnOpen: true,
+                drawerPosition:'right',
+                headerTintColor:'#000'
             }}
             >
             

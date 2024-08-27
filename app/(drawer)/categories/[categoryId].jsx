@@ -1,26 +1,37 @@
-import { View, Text, Button, ActivityIndicator, StyleSheet } from 'react-native'
-import React from 'react'
+import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import React, {useState, useCallback} from 'react'
 import { useGlobalSearchParams, useRouter } from 'expo-router'
 import { Drawer } from 'expo-router/drawer'
 import { useQuery } from '@tanstack/react-query'
 import { fetchPosts } from '../../../api/services'
-import { FlatList, ScrollView } from 'react-native-gesture-handler'
+import { FlatList } from 'react-native-gesture-handler'
 import LogoComponent from '../../../components/LogoComponent'
 import AnimatedHeaderTitle from '../../../components/AnimatedHeaderTitle'
 import Card from '../../../components/Card'
 
 const categoryIdPage = () => {
+  const [refreshing,setRefreshing] = useState(false)
   const router = useRouter()
   const params = useGlobalSearchParams()
 
   const query = useQuery({
     queryKey:['posts'],
-    queryFn: ()=>fetchPosts({perPage:25,category: params.categoryId})
+    queryFn: ()=>fetchPosts({perPage:25,category: params.categoryId}),
+    
   })
+
+  
 
   // console.log('Current Category: ', query.data);
   // console.log('PARAMS ARE: ', params);
-  
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await query.refetch();
+    } finally {
+      setRefreshing(false);
+    }
+  }, [query]);
 
   if(query.isLoading || query.isFetching){
    return (
@@ -64,6 +75,8 @@ const categoryIdPage = () => {
               author={item.author_name}
               />
       ) }
+      onRefresh={onRefresh}
+      refreshing={refreshing}
      />
 
     </View>

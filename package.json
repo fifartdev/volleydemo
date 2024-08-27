@@ -31,7 +31,8 @@
     "react-native-toast-message": "^2.2.0",
     "react-native-webview": "13.8.6",
     "expo-speech": "~12.0.2",
-    "expo-splash-screen": "~0.27.5"
+    "expo-splash-screen": "~0.27.5",
+    "expo-system-ui": "~3.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

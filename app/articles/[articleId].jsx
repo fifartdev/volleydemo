@@ -1,6 +1,6 @@
-import { View, ActivityIndicator, StyleSheet, Alert, Share,Text, Image, FlatList } from 'react-native'
+import { View, ActivityIndicator, StyleSheet, Alert, Share,Text, Pressable } from 'react-native'
 import React, {useEffect} from 'react'
-import { Stack, useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router'
 import { fetchPost, fetchPosts } from '../../api/services'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import ArticleLogo from '../../components/ArticleLogo'
@@ -10,8 +10,11 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import ArticleComponentHtml from '../../components/ArticleComponentHtml'
 import Animated, {FadeIn,Easing,FadeOut} from 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
+import * as Speech from 'expo-speech';
+
 
 const articleId = () => {
+    const router = useRouter()
     const params = useLocalSearchParams()
     const query = useQuery({
       queryKey: ['post'],
@@ -26,11 +29,6 @@ const articleId = () => {
       queryFn: () => fetchPosts({category: query.data.categories[0] == 467 ? query.data.categories[1] : query.data.categories[0], perPage:4}),
       enabled: !!query.data
     })
-
-
-    
-  
-    
 
 // HERE STARTS THE CODE FOR THE ADD TO FAVORITES
 const queryClient = useQueryClient()
@@ -171,14 +169,14 @@ const shareURL = async (message) => {
 
   return (
     
-    <Animated.View style={styles.container} entering={FadeIn.duration(800).easing(Easing.ease)} exiting={FadeOut.easing(Easing.ease)}>
+    <Animated.View style={styles.container} entering={FadeIn.duration(800).easing(Easing.ease)} exiting={FadeOut.duration(1000).easing(Easing.ease)}>
     <Stack.Screen 
     options={{
       headerTitle: ()=> <ArticleLogo />,
       headerBackTitle: 'Πίσω',
       headerTitleAlign: 'center',
-      animation: 'slide_from_right'
-    }}
+      animation: 'slide_from_right',
+      }}
     />
     <ArticleComponentHtml id={params.articleId} image={query.isLoading ? null : query?.data.fimg_url} title={ query.isLoading ? 'φορτώνει...' : query?.data.title.rendered} views={query?.data.post_views_count} date={query?.data.date} author={query?.data.author_name} content={query?.data.content.rendered} similarCatPosts={simCatPosts?.data} plaintext={query?.data.plain_text_content}/>
       <View style={styles.bottomBar}> 
@@ -217,9 +215,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height: 40, // Height of the bottom bar
+    height: 44, // Height of the bottom bar
     borderTopColor: '#ddd',
-    padding:10, // Optional border for the bottom bar
+    paddingHorizontal:10, // Optional border for the bottom bar
+    paddingVertical:8,
     borderRadius: 15,
     opacity:0.9
   },

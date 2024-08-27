@@ -1,9 +1,9 @@
-import { View, Text, ActivityIndicator, ScrollView, StatusBar, StyleSheet, LogBox, SafeAreaView, RefreshControl, Platform } from 'react-native'
+import { View, Text, ActivityIndicator, ScrollView, StatusBar, StyleSheet, LogBox, SafeAreaView, RefreshControl, Platform, ImageBackground, Button, TouchableOpacity } from 'react-native'
 import React, { useState, useCallback } from 'react'
 import Drawer from 'expo-router/drawer'
 import AnimatedLogoComponent from '../../components/AnimatedLogoComponent'
 import { useHeaderHeight } from '@react-navigation/elements'
-import { useQuery, useQueries } from '@tanstack/react-query'
+import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query'
 import { fetchCategories, fetchPosts } from '../../api/services'
 import Card from '../../components/Card'
 import { useRouter } from 'expo-router'
@@ -13,16 +13,18 @@ import CategoryTitle from '../../components/CategoryTitle'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import CategoryButton from '../../components/CategoryButton'
 import Feather from '@expo/vector-icons/Feather';
-import * as SplashScreen from 'expo-splash-screen';
 
 LogBox.ignoreLogs(['Support for defaultProps will be removed']);
 
-SplashScreen.preventAutoHideAsync()
 
 const index = () => {
+
+   //splash screen is hidden after the queries
+
   const headerHeight = useHeaderHeight()
   const router = useRouter()
   const [refreshing,setRefreshing] = useState(false)
+  const queryclient = useQueryClient()
 
   const queries = useQueries({
     queries: [
@@ -63,11 +65,17 @@ const index = () => {
     { data: plwmen, isLoading: isPlwmenLoading, error: plwmenError, isFetching: isPlwmenFetching },
     { data: categories, isLoading: isCategoriesLoading, error: categoriesError, isFetching: isCategoriesFetching },
   ] = queries;
-
-  if(featured){
-    SplashScreen.hideAsync()
-  }
+    
   
+  const fetchAgain = useMutation({
+    mutationFn:()=>fetchPosts({perPage:10}),
+    onSuccess: ()=> {
+      queryclient.invalidateQueries({queryKey:['featured']})
+      //console.log('Posts Refetched')
+      
+    },
+    onError: (error) => console.warn(error)
+  })
   
 
   const onRefresh = useCallback(()=>{
@@ -78,7 +86,11 @@ const index = () => {
 
   if(featuredError || vlmenError || vlwmenError || plmenError || plwmenError){
     return (
-      <View style={{marginTop:headerHeight,padding:10}}>
+      <ScrollView style={{marginTop:headerHeight,padding:10}}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      >
     <Drawer.Screen options={{
         headerTransparent: true,
         headerTitle:() =><AnimatedLogoComponent/>,
@@ -88,21 +100,29 @@ const index = () => {
         
         />     
         <Text style={{paddingHorizontal: 20,margin:10}}>Δεν υπάρχουν αποτελέσματα. Εδεχομένως να βρίσκεστε εκτός σύνδεσης</Text>
-      </View>
+      </ScrollView>
     )
   }
 
-  if(isFeaturedFetching||isVlmenFetching||isVlwmenFetching||isPlmenFetching||isPlwmenFetching){
+  if(isFeaturedLoading||isVlmenLoading||isVlwmenLoading||isPlmenLoading||isPlwmenLoading){
     return (
-      <View style={{marginTop:headerHeight,padding:10}}>
+      <View style={{backgroundColor:'#000', minHeight:'100%', minWidth:'100%', flex:1, margin:0, padding:0}}>
       <Drawer.Screen options={{
           headerTransparent: true,
+          headerStyle: {
+            backgroundColor: '#000'
+          },
           headerTitle:() =><AnimatedLogoComponent/>,
           headerTitleAlign:'center',
           }}
           
           />
-      <ActivityIndicator size={24} color={'#000'} />  
+      <ImageBackground style={{flex:1, minHeight:'100%', minWidth: '100%',justifyContent: 'flex-start'}} source={require('../../assets/splash.png')} resizeMode='cover'>
+      <View style={{marginTop:'40%'}}>
+        <Text style={{fontSize:20,color:'#fff',fontWeight:'bold', textAlign:'center'}}>Παρακαλώ περιμένετε...</Text>
+        <ActivityIndicator size={24} color={'#fff'} />
+      </View>
+      </ImageBackground>
       </View>  
     )
   }
@@ -112,6 +132,7 @@ const index = () => {
         headerTransparent: true,
         headerTitle:() =><AnimatedLogoComponent/>,
         headerTitleAlign:'center',
+        headerRight: () => <TouchableOpacity style={{marginRight:10}} onPress={()=>fetchAgain.mutateAsync()}><MaterialCommunityIcons name='reload' size={24} color={'#000'} /></TouchableOpacity>
         }}
         />
      <Animated.View entering={FadeIn.duration(500).easing(Easing.ease)}>

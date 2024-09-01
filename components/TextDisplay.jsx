@@ -10,7 +10,7 @@ const TextDisplay = ({html}) => {
     <RenderHTML
     source={{html:html}}
     contentWidth={width}
-    ignoredDomTags={['iframe','svg']}
+    ignoredDomTags={['iframe','svg','button']}
   />
   )
 }

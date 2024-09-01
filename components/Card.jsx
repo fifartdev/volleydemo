@@ -34,7 +34,7 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
         <Text style={styles.cardTitle}>{theTitle}</Text>
         <View style={styles.metaBox}>
           <View style={styles.metaTopLine}></View>
-          <Text style={styles.meta}><Ionicons name="calendar" size={10} color="#fff" /> {postDate(thedate)} {postTime(thetime)}</Text>
+          { thedate && <Text style={styles.meta}><Ionicons name="calendar" size={10} color="#fff" /> {postDate(thedate)} {postTime(thetime)}</Text>}
           <Text style={styles.author}><Feather name="pen-tool" size={10} color="#fff" /> {author}</Text>
           <View style={styles.metaBottomLine}></View>
         </View>

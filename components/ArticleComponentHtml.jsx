@@ -9,6 +9,8 @@ import { useRouter } from 'expo-router';
 import * as Speech from 'expo-speech';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import TextDisplay from './TextDisplay';
+import { LinearGradient } from 'expo-linear-gradient';
+import Separator from './Separator';
 
 
 function ArticleComponentHtml({image,title,content,views,date,author,similarCatPosts,id,plaintext}) {
@@ -56,7 +58,12 @@ function ArticleComponentHtml({image,title,content,views,date,author,similarCatP
         style={styles.articleImage}
         entering={FadeIn.easing(Easing.ease)}
       />
-      <Text style={styles.title}>{he.decode(title)}</Text>
+      <LinearGradient 
+        colors={['#000', 'transparent']} 
+        start={{ x: 0, y: 1 }} 
+        end={{ x: 1, y: 0 }} 
+        style={styles.gradient}
+      />
     </View>
     <View style={styles.viewsContainer}>
     <Text style={styles.metaText}><Ionicons name="calendar" size={10} color="#fff" /> { postDate(date)} {postTime(date)}</Text>
@@ -90,7 +97,9 @@ function ArticleComponentHtml({image,title,content,views,date,author,similarCatP
 
       }  
      {/*HERE TO PLACE THE TEXT COMPONENT */}
-        <TextDisplay html={content}/>
+     <Text style={styles.title}>{he.decode(title)}</Text>
+     <Separator styles={{backgroundColor:'#444',width:'30%',height:1,marginVertical:10 }}/>
+     <TextDisplay html={content}/>
       </View>
       <Text style={{fontSize:14,fontWeight:'bold',marginBottom:2}}>Διαβάστε Επίσης: </Text>
       <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',justifyContent:'space-between', width:'100%',marginBottom:50}}>
@@ -112,35 +121,34 @@ export default ArticleComponentHtml
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 15,
+        fontSize: 20,
         fontWeight: 'bold',
-        backgroundColor:'#f8f8f8',
-        position:'absolute',
-        width:'80%',
-        left:0,
-        bottom:0,
-        opacity:0.8,
-        padding: 2
+        color:'#000',
       },
       articleImage: {
         width: '100%',
         height: '100%',
+        position:'absolute'
+      },
+      gradient: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        zIndex: 1, // Ensure gradient is above the image but below the text
       },
       titleContainer: {
         marginBottom: 10,
       },
       viewsContainer:{
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginLeft: 4,
-        backgroundColor:'#444',
+        alignItems: 'flex-start',
         opacity:0.9,
         paddingVertical: 3,
         paddingHorizontal: 10,
         borderRadius: 2,
-        top: 0,
-        right: 0,
+        top: 160,
+        left: 0,
         position: 'absolute',
         width: '100%'
       },
@@ -160,7 +168,8 @@ const styles = StyleSheet.create({
       },
       metaText: {
         color: '#fff',
-        fontSize: 12
+        fontSize: 12,
+        marginVertical:3
       },
       soundBar:{
         flexDirection: 'row',

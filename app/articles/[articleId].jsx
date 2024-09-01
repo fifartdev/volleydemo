@@ -169,7 +169,7 @@ const shareURL = async (message) => {
 
   return (
     
-    <Animated.View style={styles.container} entering={FadeIn.duration(200).easing(Easing.ease)} exiting={FadeOut.duration(200).easing(Easing.ease)}>
+    <Animated.View style={styles.container} entering={FadeIn.easing(Easing.ease)} exiting={FadeOut.easing(Easing.ease)}>
     <Stack.Screen 
     options={{
       headerTitle: ()=> <ArticleLogo />,

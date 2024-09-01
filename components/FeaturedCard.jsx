@@ -31,7 +31,7 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
             <View style={styles.metaContainer}>            
         <Text style={styles.cardTitle}>{theTitle}</Text>
         <View style={{height:1,width:'20%',backgroundColor:'#444444',marginVertical:4,alignSelf:'center'}}></View>
-        <Text style={styles.date}>{postDate(thedate)} {postTime(thetime)}</Text>
+        { thedate && <Text style={styles.date}>{postDate(thedate)} {postTime(thetime)}</Text>}
         <Text style={styles.author}>{author}</Text>
             </View>
       </Pressable>

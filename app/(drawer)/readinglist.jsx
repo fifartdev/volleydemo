@@ -83,7 +83,7 @@ const handleRemoveAllPostIds= async () => {
     return (
       <SafeAreaView>
         <Drawer.Screen options={{
-        headerTitle: 'Λίστα Αγαπημένων',
+        headerTitle: 'Διαβάστε Αργότερα',
         headerTitleAlign: 'center',
         headerRight:()=><IconButton onPress={()=>alertOnRemove()} icon={<Ionicons name="trash-bin-sharp" size={24} color="#2b72b9" style={{marginRight:10}} />}/>}} 
         />
@@ -103,7 +103,7 @@ const handleRemoveAllPostIds= async () => {
   return (
     <View style={styles.container}>
       <Drawer.Screen options={{
-        headerTitle: 'Λίστα Αγαπημένων',
+        headerTitle: 'Διαβάστε Αργότερα',
         headerTitleAlign: 'center',
         headerRight:()=><IconButton onPress={()=>alertOnRemove()} icon={<Ionicons name="trash-bin-sharp" size={24} color="#2b72b9" style={{marginRight:10}} />}/>}} />
       <FlatList

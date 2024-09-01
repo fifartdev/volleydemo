@@ -28,13 +28,25 @@ export default function mainLayout(){
                 <Drawer.Screen 
                 name="readinglist"
                 options={{
-                    headerTitle:() =><AnimatedLogoComponent/>,
+                    headerTitle:'Διαβάστε Αργότερα',
                     headerTitleAlign:'center',
-                    drawerLabel: 'Reading List',
+                    drawerLabel: 'Διαβάστε Αργότερα',
                     drawerLabelStyle: {
                         color:'#2b72b9'
                     },
                     drawerIcon: ()=><FontAwesome5 name={'bookmark'} size={20} color={'#2b72b9'} />
+                }}
+                />
+                <Drawer.Screen 
+                name="notificationslist"
+                options={{
+                    headerTitle:'Ειδοποιήσεις',
+                    headerTitleAlign:'center',
+                    drawerLabel: 'Ειδοποιήσεις',
+                    drawerLabelStyle: {
+                        color:'#2b72b9'
+                    },
+                    drawerIcon: ()=><FontAwesome5 name={'bell'} size={20} color={'#2b72b9'} />
                 }}
                 />
                 <Drawer.Screen 

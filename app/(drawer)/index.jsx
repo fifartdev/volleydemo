@@ -71,10 +71,9 @@ const index = () => {
     mutationFn:()=>fetchPosts({perPage:25}),
     onSuccess: (data)=> {
       queryclient.setQueryData(['posts'], data)
-      setCategoryTitle('Volleyleague ανδρών')
       setActiveIndex(0)
+      setCategoryTitle('Volleyleague ανδρών')
       scrollViewRef.current?.scrollTo({ y: 0, animated: true });
-
        // Invalidate other queries to refetch them
        queryclient.invalidateQueries(['featured']);
        queryclient.invalidateQueries(['vlmen']);
@@ -82,6 +81,7 @@ const index = () => {
        queryclient.invalidateQueries(['vlwmen']);
        queryclient.invalidateQueries(['plwmen']);
        queryclient.invalidateQueries(['categories']);
+       
     },
     onError: (error) => console.warn(error)
   })
@@ -103,14 +103,14 @@ const index = () => {
   const mutation = useMutation({
     mutationFn: ({ id }) => fetchPosts({ category: id, perPage: 25 }),
     onSuccess: (data) => {
-      queryclient.setQueryData(['posts'], data); // Directly update the query data
+      queryclient.setQueryData(['posts'], data); 
       scrollViewRef.current?.scrollTo({ y: 0, animated: true });
     },
     onError: (error) => console.warn(error)
   });
    
 
-  const isLoadingCards = mutation.isLoading || initPosts.isFetching || initPosts.isLoading;
+  const isLoadingCards = mutation.isLoading  || mutation.isFetching || initPosts.isFetching || initPosts.isLoading;
   
   //here goes the code for the horizontal category menu
   const catScrollRef = useRef(null)
@@ -128,7 +128,7 @@ const index = () => {
     const handleCategoryClick = async (id, title, index) => {
       setCategoryTitle(title);
       setActiveIndex(index);
-  
+      
       itemScrollRef.current[index]?.measureLayout(
         catScrollRef.current,
         (x, y, width, height) => {
@@ -138,8 +138,9 @@ const index = () => {
           console.error('Measure layout error', error);
         }
       );
-  
+      
       await mutation.mutateAsync({ id });
+      
     };
 
   if(featuredError || initPosts.isError){
@@ -184,7 +185,7 @@ const index = () => {
         headerRight: () => <TouchableOpacity style={{marginRight:10}} onPress={()=>fetchAgain.mutateAsync()}><MaterialCommunityIcons name='reload' size={24} color={'#000'} /></TouchableOpacity>
         }}
         />
-     <Animated.View entering={FadeIn.duration(500).easing(Easing.ease)}>
+     <Animated.View entering={FadeIn.easing(Easing.ease)}>
      <ScrollView
       ref={scrollViewRef} 
       showsVerticalScrollIndicator={false}
@@ -210,8 +211,17 @@ const index = () => {
       {
           isFeaturedFetching?
           <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 20, flexDirection:'row' }}>
-            <ActivityIndicator size="large" color="#000" />
-            <Text style={{ marginLeft: 10, color: '#000' }}>Φορτώνει...</Text>
+            {
+              [1,2,3,4,5,6,7,8,9,10].map(i=> 
+                <FeaturedCard 
+                 title={'Φορτώνει...'} 
+                 key={i.toString()}
+                 image={null} 
+                 views={'Φορτώνει...'} 
+                 category={'Φορτώνει...'} 
+                 author={'Φορτώνει...'}
+                 /> )
+            }
           </View>:
           featured?.map(p=>{
             return (
@@ -236,8 +246,17 @@ const index = () => {
         { 
         isLoadingCards ? (
           <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 20 }}>
-            <ActivityIndicator size="large" color="#000" />
-            <Text style={{ marginTop: 10, color: '#000' }}>Φορτώνει...</Text>
+            <View>
+                  {[1,2,3,4,5,6,7,8,9,10].map(i=> 
+                   <Card 
+                    title={'Φορτώνει...'} 
+                    key={i.toString()}
+                    image={null} 
+                    views={'Φορτώνει...'} 
+                    category={'Φορτώνει...'} 
+                    author={'Φορτώνει...'}
+                    /> )}
+                  </View>
           </View>
         ) : 
         
@@ -247,9 +266,11 @@ const index = () => {
         <MaterialCommunityIcons name="volleyball" size={24} color="#000" />
         <Text style={{fontSize:24,fontWeight:'bold', marginLeft:10}}>{categoryTitle}</Text>
           </Animated.View>     
-            {
+             
+              { 
               initPosts.data?.map((p)=> {return (
-          
+                
+                
                 <Card 
                      key={p.id.toString()}
                      title={p.title.rendered} 
@@ -261,7 +282,10 @@ const index = () => {
                      thedate={p.date}
                      thetime={p.date}
                      author={p.author_name}
-                     />
+                     /> 
+                    
+
+                     
            )})
             }
           </View>
@@ -384,7 +408,7 @@ const styles = StyleSheet.create({
       shadowColor: "#171717",
       shadowOffset: { width: -2, height: 4 },
       shadowOpacity: 0.2,
-      elevation: 1
+      elevation: 1,
     },
     bottomBarItem:{
       marginHorizontal:4, 

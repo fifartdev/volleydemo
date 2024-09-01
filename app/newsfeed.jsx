@@ -11,7 +11,7 @@ import Card from '../components/Card'
 const newsFeedPage = () => {
   const router = useRouter()
   const query = useQuery({
-    queryKey:['posts'],
+    queryKey:['recentposts'],
     queryFn: ()=>fetchPosts({perPage:25})
   })
 

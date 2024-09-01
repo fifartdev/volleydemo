@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginLeft: 4,
-        backgroundColor:'#2b72b9',
+        backgroundColor:'#444',
         opacity:0.9,
         paddingVertical: 3,
         paddingHorizontal: 10,
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#2b72b9',
+        backgroundColor: '#444',
         paddingHorizontal: 4,
         paddingVertical: 4,
         opacity: 0.9
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent:'flex-start',
         alignItems:'center',
-        backgroundColor: '#000',
+        backgroundColor: '#444',
         padding: 4,
         top:-4
       },

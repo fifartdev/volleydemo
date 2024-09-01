@@ -169,7 +169,7 @@ const shareURL = async (message) => {
 
   return (
     
-    <Animated.View style={styles.container} entering={FadeIn.duration(800).easing(Easing.ease)} exiting={FadeOut.duration(1000).easing(Easing.ease)}>
+    <Animated.View style={styles.container} entering={FadeIn.duration(200).easing(Easing.ease)} exiting={FadeOut.duration(200).easing(Easing.ease)}>
     <Stack.Screen 
     options={{
       headerTitle: ()=> <ArticleLogo />,
@@ -186,13 +186,13 @@ const shareURL = async (message) => {
           handleRemovePostId(params.articleId)
           removeFavToast()   
         }
-        } icon={<Ionicons name="bookmark" size={24} color="#2b72b9" /> } /> : 
+        } icon={<Ionicons name="bookmark" size={24} color="#000" /> } /> : 
          <IconButton onPress={()=>{
           handleAddPostId(params.articleId)
           showToast()
-          }} icon={<Ionicons name="bookmark-outline" size={24} color="#2b72b9" /> } /> }
+          }} icon={<Ionicons name="bookmark-outline" size={24} color="#000" /> } /> }
         </View>
-        <View style={styles.bottomBarItem}><IconButton onPress={()=> shareURL(query?.data.link)} icon={<Ionicons name="share-social" size={24} color="#2b72b9" />}/></View>
+        <View style={styles.bottomBarItem}><IconButton onPress={()=> shareURL(query?.data.link)} icon={<Ionicons name="share-social" size={24} color="#000" />}/></View>
       </View>
       <Toast />
     </Animated.View>

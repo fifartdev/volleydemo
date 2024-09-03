@@ -7,6 +7,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import LogoComponent from '../components/LogoComponent'
 import AnimatedHeaderTitle from '../components/AnimatedHeaderTitle'
 import Card from '../components/Card'
+import CardLoader from '../components/CardLoader'
 
 const newsFeedPage = () => {
   const router = useRouter()
@@ -30,7 +31,9 @@ const newsFeedPage = () => {
           headerTitleAlign: 'center'
         }}
       />
-      <ActivityIndicator size={20} color={'blue'}/>
+       {[1,2,3,4,5,6,7,8,9,10].map(i=> 
+                   <CardLoader key={i.toString()}/>
+                   )}
     </View>
    ) 
   }

@@ -2,6 +2,7 @@ import { Pressable, Text, StyleSheet, Dimensions, View, Image } from "react-nati
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useState, memo } from "react";
 import he from 'he'
+import Feather from '@expo/vector-icons/Feather'
 
 const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, category, goToCategory }) => {
   
@@ -25,14 +26,14 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
              <Ionicons name="eye" size={14} color="#fff" /><Text style={styles.cardViews}>{views}</Text>
         </View>
         <View style={styles.categoryContainer}>
-                <Text onPress={goToCategory} style={styles.categoryTitle}>{category}</Text>
+                <Text onPress={goToCategory} style={styles.categoryTitle}>#{category}</Text>
             </View>
         </View>
             <View style={styles.metaContainer}>            
         <Text style={styles.cardTitle}>{theTitle}</Text>
         <View style={{height:1,width:'20%',backgroundColor:'#444444',marginVertical:4,alignSelf:'center'}}></View>
-        { thedate && <Text style={styles.date}>{postDate(thedate)} {postTime(thetime)}</Text>}
-        <Text style={styles.author}>{author}</Text>
+        { thedate && <Text style={styles.date}><Feather name="calendar" size={10} color="#444" /> {postDate(thedate)} {postTime(thetime)}</Text>}
+        <Text style={styles.author}> <Feather name="pen-tool" size={10} color="#444" /> {author}</Text>
             </View>
       </Pressable>
     );
@@ -82,7 +83,7 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         position: 'absolute'
       },
       cardViews: {
-        fontSize: 12,
+        fontSize: 14,
         color: '#fff',
         marginLeft: 10,
       },
@@ -96,14 +97,14 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         paddingVertical: 3,
         paddingHorizontal: 10,
         borderRadius: 2,
-        backgroundColor: 'lightgrey',
+        backgroundColor: '#fff',
         position: 'absolute',
         top:2,
         left: 0,
         opacity: 0.9
       },
       metaContainer: {
-        flex:1,
+        padding:4,
         justifyContent: 'center',
         top:10,
         alignContent:'center',
@@ -125,7 +126,7 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         elevation:2
       },
       cardTitle: {
-        fontSize: 12, 
+        fontSize: 14, 
         fontWeight:'bold', 
         color: '#444444', 
         padding: 4,
@@ -134,21 +135,23 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
       },
       date:{
         color:'#444444',
-        fontSize:10,
+        fontSize:11,
         fontWeight:'bold',
         textAlign:'center',
       },
       author:{
         color:'#444444',
-        fontSize:10,
+        fontSize:11,
         fontWeight:'bold',
         textAlign:'center',
       },
       categoryTitle: {
         maxWidth: '100%',
-        fontSize: 10,
+        fontSize: 13,
         alignSelf:'center',
-        alignContent:'center'
+        alignContent:'center',
+        letterSpacing:-0.5,
+        fontWeight:'bold'
       },
       imageContainer: {
         flex:1,

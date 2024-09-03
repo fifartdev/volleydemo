@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         width: '100%'
       },
       cardViews: {
-        fontSize: 10,
+        fontSize: 12,
         color: '#fff',
         marginLeft: 10,
       },
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
       },
       metaText: {
         color: '#fff',
-        fontSize: 12,
+        fontSize: 14,
         marginVertical:3
       },
       soundBar:{

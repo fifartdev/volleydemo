@@ -8,7 +8,7 @@ import { Drawer } from 'expo-router/drawer'
 import IconButton from '../../components/IconButton'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Card from '../../components/Card'
-
+import CardLoader from '../../components/CardLoader'
 
 export default function readingList() {
   const date = (d) => { return new Date(d).toLocaleDateString('el-GR')}
@@ -87,7 +87,9 @@ const handleRemoveAllPostIds= async () => {
         headerTitleAlign: 'center',
         headerRight:()=><IconButton onPress={()=>alertOnRemove()} icon={<Ionicons name="trash-bin-sharp" size={24} color="#2b72b9" style={{marginRight:10}} />}/>}} 
         />
-        <ActivityIndicator size="small" color="blue" />
+         {[1,2,3,4,5,6,7,8,9,10].map(i=> 
+                   <CardLoader key={i.toString()}/>
+                   )}
       </SafeAreaView>
     );
   }

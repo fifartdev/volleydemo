@@ -1,10 +1,10 @@
-import { Text, StyleSheet, Dimensions, View, Image, Platform, Pressable } from "react-native";
+import { Text, StyleSheet, Dimensions, View, Image, Platform, Pressable, ActivityIndicator } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useEffect, useState, memo } from "react";
 import he from 'he'
 import Feather from '@expo/vector-icons/Feather';
 
-const Card = ({ title, onPress, image, views, category, goToCategory, thetime, thedate,author }) => {
+const Card = ({ title, onPress, image, views, category, goToCategory, thetime, thedate,author,isLoading }) => {
 
     const [theTitle,setTheTitle]=useState()
     const postDate = (d) => { return new Date(d).toLocaleDateString('el-GR')}
@@ -17,26 +17,33 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
 
     return (
       <Pressable onPress={onPress} style={styles.cardContainer}>
+        
+        {
+       isLoading ? 
+       <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+         <ActivityIndicator size={'small'} color={'#000'} />
+       </View>
+       :
         <View style={styles.imageContainer}>
         <Image source={
           image ? {uri:image} : require('../assets/volleyland_logo.png')
         } style={styles.cardImage} />
-        <View style={styles.viewsContainer}>
+       { views &&  <View style={styles.viewsContainer}>
              <Ionicons name="eye" size={14} color="#fff" /><Text style={styles.cardViews}>{views}</Text>
-        </View>
-        </View>
+        </View>}
+        </View> }
         <View style={{flex:1}}>
             <View style={styles.metaContainer}>
-            <View style={styles.categoryContainer}>
-                <Text onPress={goToCategory} style={styles.categoryTitle}>{category}</Text>
-            </View>
+          {  (thedate || author) && <View style={styles.categoryContainer}>
+              <Text onPress={goToCategory} style={styles.categoryTitle}>#{category}</Text>
+            </View>}
             </View>
         <Text style={styles.cardTitle}>{theTitle}</Text>
         <View style={styles.metaBox}>
-          <View style={styles.metaTopLine}></View>
+         {(thedate || author)&& <View style={styles.metaTopLine}></View>}
           { thedate && <Text style={styles.meta}><Ionicons name="calendar" size={10} color="#fff" /> {postDate(thedate)} {postTime(thetime)}</Text>}
-          <Text style={styles.author}><Feather name="pen-tool" size={10} color="#fff" /> {author}</Text>
-          <View style={styles.metaBottomLine}></View>
+         { author && <Text style={styles.author}><Feather name="pen-tool" size={10} color="#fff" /> {author}</Text>}
+          { (thedate || author) && <View style={styles.metaBottomLine}></View>}
         </View>
         </View>
       </Pressable>
@@ -75,13 +82,13 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
         position: 'absolute',
         left: -20,
         top: 26,
-        fontSize: 12, 
+        fontSize: 14, 
         fontWeight:'bold', 
         color: '#fff', 
         padding: 10 
       },
       cardCategory: {
-        fontSize: 12,
+        fontSize: 14,
       },
       viewsContainer:{
         flexDirection: 'row',
@@ -97,7 +104,7 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
         position: 'absolute'
       },
       cardViews: {
-        fontSize: 12,
+        fontSize: 14,
         color: '#fff',
         marginLeft: 10,
       },
@@ -109,8 +116,6 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
         marginLeft: 4,
         paddingVertical: 3,
         paddingHorizontal: 10,
-        borderRadius: 2,
-        backgroundColor: 'lightgrey'
       },
       metaContainer: {
         flex:1,
@@ -121,7 +126,10 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
       },
       categoryTitle: {
         maxWidth: '100%',
-        fontSize: 10
+        fontSize: 13,
+        fontWeight:'bold',
+        letterSpacing:-0.5
+        
       },
       imageContainer: {
         flex:1,
@@ -138,13 +146,13 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
       },
       meta: {
         color: '#444',
-        fontSize: 10,
+        fontSize: 11,
         fontWeight: 'bold',
         textAlign: 'right',
       },
       author: {
         color:'#444',
-        fontSize: 10,
+        fontSize: 11,
         fontWeight: 'bold',
         textAlign: 'right'
       },

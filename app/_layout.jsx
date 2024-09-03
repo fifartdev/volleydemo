@@ -19,6 +19,11 @@ export default function Layout() {
         title:"Ροή Ειδήσεων",
         }}/>
       <Stack.Screen name="(drawer)" options={{headerShown:false, title:'Αρχική'}} />
+      <Stack.Screen name="categories/[categoryId]"  
+      options={{
+        headerBackTitle:'Πίσω'
+      }}
+      />
     </Stack>    
     </QueryClientProvider>
     </GestureHandlerRootView>

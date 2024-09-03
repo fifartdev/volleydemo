@@ -11,6 +11,7 @@ const TextDisplay = ({html}) => {
     source={{html:html}}
     contentWidth={width}
     ignoredDomTags={['iframe','svg','button']}
+    tagsStyles={{p:{fontSize:15,lineHeight:20},a:{fontSize:15,lineHeight:20}}}
   />
   )
 }

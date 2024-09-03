@@ -67,10 +67,26 @@ const stripHtmlAndDecode = (str) => {
   return decode(str.replace(/(<([^>]+)>)/gi, ""));
 };
 
+const fetchNotificationsList = async () => {
+  const notUrl = `https://onesignal.com/api/v1/notifications?app_id=aa2ad145-0417-4a65-92a3-e2d0c6eacbc6&platform=1limit=25`;
+  try {
+    const response = await axios.get(notUrl, {
+      headers: {
+        Authorization: `Basic MGY1ZjIwYjEtMjBkMS00MDMyLWJkMTMtZGM0MDBiM2E5Nzkx`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log("Error Fetching Notifications", error);
+  }
+};
+
 export {
   fetchPosts,
   stripHtmlAndDecode,
   fetchPost,
   fetchMustReadPosts,
   fetchCategories,
+  fetchNotificationsList,
 };

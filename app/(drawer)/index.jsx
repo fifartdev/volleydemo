@@ -5,13 +5,16 @@ import AnimatedLogoComponent from '../../components/AnimatedLogoComponent'
 import { useHeaderHeight } from '@react-navigation/elements'
 import { useMutation, useQueries, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchCategories, fetchPosts } from '../../api/services'
-import Card from '../../components/Card'
 import { useRouter } from 'expo-router'
 import FeaturedCard from '../../components/FeaturedCard'
 import Animated, {FadeIn,Easing} from 'react-native-reanimated'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import CategoryButton from '../../components/CategoryButton'
 import Feather from '@expo/vector-icons/Feather';
+import CardLoader from '../../components/CardLoader'
+import CardTitle from '../../components/CardTitle'
+import FeaturedCardLoader from '../../components/FeaturedCardLoader'
+import CategoryCard from '../../components/CategoryCard'
 
 LogBox.ignoreLogs(['Support for defaultProps will be removed']);
 
@@ -209,20 +212,9 @@ const index = () => {
         </View> 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       {
-          isFeaturedFetching?
-          <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 20, flexDirection:'row' }}>
-            {
-              [1,2,3,4,5,6,7,8,9,10].map(i=> 
-                <FeaturedCard 
-                 title={'Φορτώνει...'} 
-                 key={i.toString()}
-                 image={null} 
-                 views={'Φορτώνει...'} 
-                 category={'Φορτώνει...'} 
-                 author={'Φορτώνει...'}
-                 /> )
-            }
-          </View>:
+          isFeaturedFetching ?
+                <FeaturedCardLoader/>   
+          :
           featured?.map(p=>{
             return (
               <FeaturedCard
@@ -231,8 +223,8 @@ const index = () => {
               onPress={() => router.push(`/articles/${p.id}`)} 
               image={p.fimg_url} 
               views={p.post_views_count} 
-              goToCategory={ p.categories_names[0]==='Featured' ? ()=> router.push(`categories/${p.categories[1]}?title=${p.categories_names[1]}`) : ()=> router.push(`categories/${p.categories[0]}?title=Διάφορα`)} 
-              category={p.categories_names[0]==='Featured' ? p.categories_names[1] : 'Διάφορα' } 
+              goToCategory={ (p.categories_names[0]==='Featured' && p.categories_names.length > 1) ? ()=> router.push(`categories/${p.categories[1]}?title=${p.categories_names[1]}`) : ()=> router.push(`categories/${p.categories[0]}?title=Διάφορα`)} 
+              category={(p.categories_names[0]==='Featured' && p.categories_names.length > 1) ? p.categories_names[1] : 'Διάφορα' } 
               thedate={p.date}
               thetime={p.date}
               author={p.author_name}
@@ -246,17 +238,12 @@ const index = () => {
         { 
         isLoadingCards ? (
           <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 20 }}>
-            <View>
+            <View style={{}}>
+                    <CardTitle />
                   {[1,2,3,4,5,6,7,8,9,10].map(i=> 
-                   <Card 
-                    title={'Φορτώνει...'} 
-                    key={i.toString()}
-                    image={null} 
-                    views={'Φορτώνει...'} 
-                    category={'Φορτώνει...'} 
-                    author={'Φορτώνει...'}
-                    /> )}
-                  </View>
+                   <CardLoader key={i.toString()}/>
+                   )}
+            </View>
           </View>
         ) : 
         
@@ -271,17 +258,18 @@ const index = () => {
               initPosts.data?.map((p)=> {return (
                 
                 
-                <Card 
+                <CategoryCard 
                      key={p.id.toString()}
                      title={p.title.rendered} 
                      onPress={() => router.push(`/articles/${p.id}`)} 
                      image={p.fimg_url} 
                      views={p.post_views_count} 
-                     goToCategory={ p.categories_names[0]==='Featured' ? ()=> router.push(`categories/${p.categories[1]}?title=${p.categories_names[1]}`) : ()=> router.push(`categories/${p.categories[0]}?title=Διάφορα`)} 
-                     category={p.categories_names[0]==='Featured' ? p.categories_names[1] : 'Διάφορα' } 
+                     goToCategory={ (p.categories_names[0]==='Featured' && p.categories_names.length > 1) ? ()=> router.push(`categories/${p.categories[1]}?title=${p.categories_names[1]}`) : ()=> router.push(`categories/${p.categories[0]}?title=Διάφορα`)} 
+                     category={(p.categories_names[0]==='Featured' && p.categories_names.length > 1) ? p.categories_names[1] : 'Διάφορα' } 
                      thedate={p.date}
                      thetime={p.date}
                      author={p.author_name}
+                     isLoading={isLoadingCards}
                      /> 
                     
 

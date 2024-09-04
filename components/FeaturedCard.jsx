@@ -92,8 +92,8 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         height: 200
       },
       categoryContainer:{
-        margin: 4,
-        height: 20,
+        margin: 3,
+        height: 24,
         paddingVertical: 3,
         paddingHorizontal: 10,
         borderRadius: 2,
@@ -101,7 +101,10 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
         position: 'absolute',
         top:2,
         left: 0,
-        opacity: 0.9
+        opacity: 0.9,
+        justifyContent:'center',
+        alignItems:'center',
+        flex:1
       },
       metaContainer: {
         padding:4,
@@ -147,11 +150,11 @@ const FeaturedCard = ({ title, thedate,thetime,author, onPress, image, views, ca
       },
       categoryTitle: {
         maxWidth: '100%',
-        fontSize: 13,
+        fontSize: 14,
         alignSelf:'center',
         alignContent:'center',
         letterSpacing:-0.5,
-        fontWeight:'bold'
+        fontWeight:'bold',
       },
       imageContainer: {
         flex:1,

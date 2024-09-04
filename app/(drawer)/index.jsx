@@ -188,7 +188,7 @@ const index = () => {
         headerRight: () => <TouchableOpacity style={{marginRight:10}} onPress={()=>fetchAgain.mutateAsync()}><MaterialCommunityIcons name='reload' size={24} color={'#000'} /></TouchableOpacity>
         }}
         />
-     <Animated.View entering={FadeIn.easing(Easing.ease)}>
+     <View>
      <ScrollView
       ref={scrollViewRef} 
       showsVerticalScrollIndicator={false}
@@ -198,7 +198,7 @@ const index = () => {
       >
       <View style={styles.alternativeHorizontalCardAlt}>
        <View style={{flexDirection:'row', justifyContent:'space-between'}}>
-     <Animated.View entering={FadeIn.easing(Easing.ease)} style={{flexDirection:'row', justifyContent:'center',alignItems:'center',marginLeft:8}}>
+     <Animated.View entering={FadeIn.duration(100).easing(Easing.ease)} style={{flexDirection:'row', justifyContent:'center',alignItems:'center',marginLeft:8}}>
      <MaterialCommunityIcons name="access-point" size={24} color="#000" />
      <Text style={{fontSize:24,fontWeight:'bold', marginLeft:10}}>Προτεινόμενα</Text>
      </Animated.View>
@@ -249,7 +249,7 @@ const index = () => {
         
         (
           <View>
-        <Animated.View entering={FadeIn.duration(500).easing(Easing.ease)} style={{flexDirection:'row', justifyContent:'center', alignItems:'center',marginBottom:10}}>          
+        <Animated.View entering={FadeIn.duration(100).easing(Easing.ease)} style={{flexDirection:'row', justifyContent:'center', alignItems:'center',marginBottom:10}}>          
         <MaterialCommunityIcons name="volleyball" size={24} color="#000" />
         <Text style={{fontSize:24,fontWeight:'bold', marginLeft:10}}>{categoryTitle}</Text>
           </Animated.View>     
@@ -279,7 +279,7 @@ const index = () => {
           </View>
           )}
           </ScrollView>
-      </Animated.View>  
+      </View>  
       {initPosts.isFetching ? null :   
       <View style={styles.categoryBar}>
       <View style={{justifyContent:'center', alignItems:'center',alignContent:'center'}}>

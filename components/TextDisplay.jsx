@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions } from 'react-native'
+import { View, Text, useWindowDimensions, StyleSheet } from 'react-native'
 import React, { memo } from 'react'
 import RenderHTML from 'react-native-render-html';
 
@@ -14,6 +14,13 @@ const TextDisplay = ({html}) => {
     tagsStyles={{p:{fontSize:15,lineHeight:20},a:{fontSize:15,lineHeight:20}}}
   />
   )
+ 
 }
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1
+  }
+})
 
 export default memo(TextDisplay)

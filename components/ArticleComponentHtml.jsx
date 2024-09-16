@@ -1,4 +1,4 @@
-import { View, Text, useWindowDimensions, StyleSheet, Image, TouchableOpacity, Platform, BackHandler } from 'react-native'
+import { View, Text, useWindowDimensions, StyleSheet, Image, TouchableOpacity, Platform, BackHandler, Dimensions } from 'react-native'
 import React, { memo, useEffect, useState} from 'react'
 import he from 'he'
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -11,14 +11,31 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import TextDisplay from './TextDisplay';
 import { LinearGradient } from 'expo-linear-gradient';
 import Separator from './Separator';
+import {WebView} from 'react-native-webview';
 
 
-function ArticleComponentHtml({image,title,content,views,date,author,similarCatPosts,id,plaintext}) {
+function ArticleComponentHtml({image,title,content,views,date,author,similarCatPosts,id,plaintext,uri}) {
   const postDate = (d) => { return new Date(d).toLocaleDateString('el-GR')}
   const postTime = (d) => { return new Date(d).toLocaleTimeString('el-GR')}
   const [shown,setShown] = useState(true)
   const [resumeShown,setResumeShown] = useState(false)
   const router = useRouter()
+  //const { height: screenHeight } = Dimensions.get('window');
+  const { height } = useWindowDimensions()
+
+  const [webViewHeight, setWebViewHeight] = useState(height); // State to handle WebView height dynamically
+
+  // Function to handle dynamic WebView height
+  const onWebViewMessage = (event) => {
+    const message = event.nativeEvent.data;
+    console.log('Message from WebView:', message);
+    const newHeight = parseInt(message*0.45,10);
+    console.log('New Heigh will be: ',newHeight);
+    
+    if (!isNaN(newHeight)) {
+      setWebViewHeight(newHeight);
+    }
+  };
 
   const filteredPosts = similarCatPosts.filter(f => f.id != id)
   
@@ -45,10 +62,33 @@ function ArticleComponentHtml({image,title,content,views,date,author,similarCatP
 
 // TEXT 2 SPEACH ENDS HERE
 
+const sourceCode = `<div style='font-size:2.8em !important;font-family:Arial; padding:0 4 0 4;'>${content}</div>`
+
+// return (
+//   <WebView
+//       style={styles.container}
+//       source={{ html: sourceCode }}
+//     />
+// )
+// }
+
+const javascriptInj = `
+window.ReactNativeWebView.postMessage(Math.max(document.body.offsetHeight, document.documentElement.offsetHeight));
+  let header = document.querySelector('.tdi_6');
+  header.style.display="none";
+`
+
+  useEffect(()=>{
+    console.log('Screen Height is: ', height);
+    
+    console.log('Height is:',webViewHeight);
+    
+  },[])
 
   return (
     <ScrollView
     showsVerticalScrollIndicator={false}
+    contentContainerStyle={{backgroundColor:'#fff',paddingHorizontal:2}}
     >
     <View style={{flexDirection:'row', height:240, borderBottomWidth:4, borderBottomColor: '#f8f8f8'}}>
     <Animated.Image
@@ -70,7 +110,7 @@ function ArticleComponentHtml({image,title,content,views,date,author,similarCatP
     <Text style={styles.metaText}><Feather name="pen-tool" size={10} color="#fff" /> {author}</Text>
     <Text style={styles.metaText}><Ionicons name="eye" size={10} color="#fff" /> {views}</Text>
     </View>
-      <View style={{flex: 1}}>
+      <View>
       { Platform.OS === 'ios' ? 
       <View style={styles.soundBar}>
         <Text style={styles.soundBarText}>Ακούστε το Άρθρο: </Text>
@@ -99,9 +139,31 @@ function ArticleComponentHtml({image,title,content,views,date,author,similarCatP
      {/*HERE TO PLACE THE TEXT COMPONENT */}
      <Text style={styles.title}>{he.decode(title)}</Text>
      <Separator styles={{backgroundColor:'#444',width:'30%',height:1,marginVertical:10 }}/>
-     <TextDisplay html={content}/>
-      </View>
-      <Text style={{fontSize:14,fontWeight:'bold',marginBottom:2}}>Διαβάστε Επίσης: </Text>
+     {/* <TextDisplay html={content} uri={uri}/> */}
+     
+     {/* <WebView
+          style={{ width: '100%', height:webViewHeight}} // Set the WebView height dynamically
+          source={{ html: sourceCode }}
+          onMessage={onWebViewMessage} // Listen for height messages
+          injectedJavaScript="window.ReactNativeWebView.postMessage(Math.max(document.body.offsetHeight, document.documentElement.offsetHeight));"
+          javaScriptEnabled={true}
+          scalesPageToFit={false}
+          scrollEnabled={false}
+          
+        /> */}
+      <WebView
+          style={{ width: '100%', height:webViewHeight}} // Set the WebView height dynamically
+          source={{ uri: uri }}
+          onMessage={onWebViewMessage} // Listen for height messages
+          injectedJavaScript={javascriptInj}
+          javaScriptEnabled={true}
+          scalesPageToFit={false}
+          scrollEnabled={false}
+          
+        />  
+
+
+    <Text style={{fontSize:14,fontWeight:'bold',marginBottom:2}}>Διαβάστε Επίσης: </Text>
       <View style={{flex:1,flexDirection:'row',flexWrap: 'wrap',justifyContent:'space-between', width:'100%',marginBottom:50}}>
         {
           filteredPosts?.map((p)=>(
@@ -113,6 +175,10 @@ function ArticleComponentHtml({image,title,content,views,date,author,similarCatP
 
         }
       </View>
+
+
+      </View>
+      
     </ScrollView>
   )
 }
@@ -184,5 +250,8 @@ const styles = StyleSheet.create({
         fontWeight:'bold',
         color: '#fff'
 
+      },
+      container:{
+        
       }
     })

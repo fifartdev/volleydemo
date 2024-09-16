@@ -61,6 +61,18 @@ export default function mainLayout(){
                     drawerIcon: ()=><Ionicons name={'settings-sharp'} size={20} color={'#2b72b9'} />
                 }}
                 />
+                <Drawer.Screen 
+                name="althome"
+                options={{
+                    headerTitle:'Alt Home',
+                    headerTitleAlign:'center',
+                    drawerLabel: 'Alt Home',
+                    drawerLabelStyle: {
+                        color:'#2b72b9'
+                    },
+                    drawerIcon: ()=><FontAwesome5 name={'volleyball-ball'} size={20} color={'#2b72b9'} />
+                }}
+                />
             </Drawer>
     )
 }

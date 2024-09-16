@@ -25,8 +25,7 @@ const Card = ({ title, onPress, image, views, category, goToCategory, thetime, t
        </View>
        :
         <View style={styles.imageContainer}>
-        <Image source={
-          image ? {uri:image} : require('../assets/volleyland_logo.png')
+        <Image source={ image ? {uri:image} : require('../assets/volleyland_logo.png')
         } style={styles.cardImage} />
        { views &&  <View style={styles.viewsContainer}>
              <Ionicons name="eye" size={14} color="#fff" /><Text style={styles.cardViews}>{views}</Text>

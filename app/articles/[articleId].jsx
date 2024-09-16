@@ -11,6 +11,7 @@ import ArticleComponentHtml from '../../components/ArticleComponentHtml'
 import Animated, {FadeIn,Easing,FadeOut} from 'react-native-reanimated'
 import Toast from 'react-native-toast-message'
 import * as Speech from 'expo-speech';
+import SingleArticle from '../../components/SingleArticle'
 
 
 const articleId = () => {
@@ -178,7 +179,7 @@ const shareURL = async (message) => {
       animation: 'slide_from_right',
       }}
     />
-    <ArticleComponentHtml id={params.articleId} image={query.isLoading ? null : query?.data.fimg_url} title={ query.isLoading ? 'φορτώνει...' : query?.data.title.rendered} views={query?.data.post_views_count} date={query?.data.date} author={query?.data.author_name} content={query?.data.content.rendered} similarCatPosts={simCatPosts?.data} plaintext={query?.data.plain_text_content}/>
+    <SingleArticle uri={query.data.link} />
       <View style={styles.bottomBar}> 
         <View style={styles.bottomBarItem}>
          { postIds?.data.includes(params.articleId) ? 
